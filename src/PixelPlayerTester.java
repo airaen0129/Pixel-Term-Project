@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PixelPlayerTester extends Player {
-    static final int LEVEL = 3;
+    static final int LEVEL = 3;		// 알파베타 알고리즘의 노드 탐색 깊이
 
 	PixelPlayerTester(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
