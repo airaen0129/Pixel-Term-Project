@@ -1,8 +1,9 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PixelPlayer08 extends Player {
-    static final int DEPTH = 5;		// 알파베타 알고리즘의 노드 탐색 깊이
+    static final int DEPTH = 8;		// 알파베타 알고리즘의 노드 탐색 깊이
 	static Point nextDolPosition = new Point(0, 0);
     static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
                                     {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
@@ -51,7 +52,11 @@ public class PixelPlayer08 extends Player {
             if (result > max) {
             	max = result;		// max값 갱신
 
-				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 추가
+				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
+			}
+            if (result == max && depth == DEPTH) {	// 새로운 같은 값을 받았을 때 바꿀지 말지 랜덤으로 정한다.
+            	Random r = new Random();
+            	if (r.nextBoolean()) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
 			}
             if (max >= beta) return max;		// max가 beta보다 크면 유망하지 않으므로 검사 중지
             if (max > alpha) alpha = max;		// alpha를 가장 큰 값으로 갱신
@@ -117,6 +122,7 @@ public class PixelPlayer08 extends Player {
         int cnt = 0, midCnt = 0;
 
         for (int i = 0; i < pattern.length; i++) {
+			if (pattern[i][0] != temp[0]) continue;
             for (int j = 0; j < pattern[0].length; j++) {
                 if (pattern[i][j] == -1) midCnt++;
                 else if (pattern[i][j] == 1 && temp[j] == player) midCnt++;
