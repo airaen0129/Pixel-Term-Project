@@ -2,8 +2,14 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PixelPlayerTester extends Player {
-    static final int DEPTH = 3;		// 알파베타 알고리즘의 노드 탐색 깊이
-	static Point nextDolPosition;
+    static final int DEPTH = 5;		// 알파베타 알고리즘의 노드 탐색 깊이
+	static Point nextDolPosition = new Point(0, 0);
+    static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
+                                    {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
+
+    static int onePattern3X3[][] = {{1,-1,-1,-1,1,-1,-1,-1,0},
+                                    {0,-1,-1,-1,1,-1,-1,-1,1},
+                                    {1,-1,-1,-1,0,-1,-1,-1,1}};
 
 	PixelPlayerTester(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
@@ -44,7 +50,8 @@ public class PixelPlayerTester extends Player {
 
             if (result > max) {
             	max = result;		// max값 갱신
-				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());;	// 노드 추가
+
+				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 추가
 			}
             if (max >= beta) return max;		// max가 beta보다 크면 유망하지 않으므로 검사 중지
             if (max > alpha) alpha = max;		// alpha를 가장 큰 값으로 갱신
@@ -69,7 +76,57 @@ public class PixelPlayerTester extends Player {
 		}
 		return min;
 	}
-	private int Result(int[][] map, int player) { return 0; }
+    private int Result(int[][] map, int player) {
+        //picture 2 -> 2*2 사이즈에서 이길 수 있는 모형들
+        //picture 3 -> 3*3 사이즈에서 이길 수 있는 모형들
+        //count means counting the model which could win
+        int myCount = 0;
+        int oppoCount = 0;
+        int result = 0;
+        int temp[] = null;
+        for(int i=0; i<7; i++){
+            for(int j=0; j<7 ; j++){
+                temp = copyPattern(2,i,j,map);
+                myCount += arrayCompare(player, temp, onePattern2X2);
+                oppoCount += arrayCompare(NotPlayer(player), temp, onePattern2X2);
+            }
+        }
+        for(int i=0; i<6; i++){
+            for (int j = 0; j < 6; j++) {
+                temp = copyPattern(3,i,j,map);
+                myCount += arrayCompare(player, temp, onePattern3X3);
+                oppoCount += arrayCompare(NotPlayer(player), temp, onePattern3X3);
+            }
+        }
+        result = myCount - oppoCount;
+        return result;
+    }
+    //Function used for comparing array
+    private int[] copyPattern(int size,int row, int col, int[][] map){
+        int[] temp = new int[size * size];
+        int cut=0;
+        for(int i = row; i < row + size; i++) {
+            for (int j = col; j < col + size; j++) {
+                temp[cut] = map[i][j];
+                cut++;
+            }
+        }
+        return temp;
+    }
+    private int arrayCompare(int player, int[] temp, int[][] pattern){
+        int cnt = 0, midCnt = 0;
+
+        for (int i = 0; i < pattern.length; i++) {
+            for (int j = 0; j < pattern[0].length; j++) {
+                if (pattern[i][j] == -1) midCnt++;
+                else if (pattern[i][j] == 1 && temp[j] == player) midCnt++;
+                else if (pattern[i][j] == 0 && temp[j] == 0) midCnt++;
+            }
+            if (midCnt == pattern[0].length) cnt++;
+            midCnt = 0;
+        }
+        return cnt;
+    }
 	// 2차원 배열 복사 메소드
 	// 사용법: arrayDest = ArrayCopy(arraySrc)
 	private int[][] ArrayCopy(int[][] src) {
