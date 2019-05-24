@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="72f80e8f-47b9-4642-b8d7-c671c482d39a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/PixelPlayerTester.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PixelTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PixelTester.java" afterDir="false" />
-    </list>
+    <list default="true" id="72f80e8f-47b9-4642-b8d7-c671c482d39a" name="Default Changelist" comment="code is finish.&#10;java name change (Tester -&gt; 08)&#10;Performance Improvement Needed performance" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,8 +16,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PixelPlayer08.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+            <state relative-caret-position="576">
+              <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -42,14 +39,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/PixelPlayerTester.java" />
         <option value="$PROJECT_DIR$/src/PixelTester.java" />
         <option value="$PROJECT_DIR$/src/PixelPlayer08.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -129,7 +126,7 @@
       <workItem from="1558625913834" duration="50000" />
       <workItem from="1558626459845" duration="98000" />
       <workItem from="1558669888586" duration="9000" />
-      <workItem from="1558671684606" duration="14046000" />
+      <workItem from="1558671684606" duration="14409000" />
     </task>
     <task id="LOCAL-00001" summary="alpha beta algorithms is almost done.&#10;heuristic function left.&#10;testing left.">
       <created>1558680573665</created>
@@ -152,11 +149,25 @@
       <option name="project" value="LOCAL" />
       <updated>1558689514175</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="code is finish.&#10;java name change (Tester -&gt; 08)&#10;Performance Improvement Needed performance">
+      <created>1558689767789</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1558689767789</updated>
+    </task>
+    <task id="LOCAL-00005" summary="code is finish.&#10;java name change (Tester -&gt; 08)&#10;Performance Improvement Needed performance">
+      <created>1558689898509</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1558689898509</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15652000" />
+    <option name="totallyTimeSpent" value="16015000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -173,7 +184,7 @@
       <window_info anchor="bottom" id="CheckStyle" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32922733" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3292683" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3292683" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -203,20 +214,14 @@
     <MESSAGE value="alpha beta algorithms is almost done.&#10;heuristic function left.&#10;testing left." />
     <MESSAGE value="alpha beta algorithms is maybe done.&#10;heuristic function left.&#10;testing left." />
     <MESSAGE value="code is finish.&#10;Performance Improvement Needed performance" />
-    <option name="LAST_COMMIT_MESSAGE" value="code is finish.&#10;Performance Improvement Needed performance" />
+    <MESSAGE value="code is finish.&#10;java name change (Tester -&gt; 08)&#10;Performance Improvement Needed performance" />
+    <option name="LAST_COMMIT_MESSAGE" value="code is finish.&#10;java name change (Tester -&gt; 08)&#10;Performance Improvement Needed performance" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/PixelBoard.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
           <caret line="19" column="37" lean-forward="true" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
@@ -264,10 +269,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="576">
+          <caret line="24" column="11" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/PixelPlayer08.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        <state relative-caret-position="576">
+          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
         </state>
       </provider>
     </entry>
