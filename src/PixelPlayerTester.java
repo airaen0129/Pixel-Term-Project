@@ -3,16 +3,14 @@ import java.util.ArrayList;
 
 public class PixelPlayerTester extends Player {
     static final int DEPTH = 3;		// 알파베타 알고리즘의 노드 탐색 깊이
+	static Point nextDolPosition;
 
 	PixelPlayerTester(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
-		int x = (int)lastPosition.getX(), y = (int)lastPosition.getY();
-		int player = map[x][y] == 1 ? 1 : 2;	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
-		Point nextPosition;
+		int player = map[(int)lastPosition.getX()][(int)lastPosition.getY()] == 1 ? 1 : 2;	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
 
-        // 메인 필요
-		nextPosition = new Point(x, y);
-		return nextPosition;
+		MaxValue(DEPTH, map, lastPosition, player, -100, +100);	// 알파베타 가지치기 알고리즘 호출
+		return nextDolPosition;
 	}
 
 	// 주어진 상태에서 가능한 수들의 집합을 돌려준다.
@@ -31,10 +29,6 @@ public class PixelPlayerTester extends Player {
 		}
 		return actionsPoint.toArray(new Point[actionsPoint.size()]);  // arraylist -> array
 	}
-	// 알파베타 가지치기 알고리즘
-	private void AlphaBetaSearch(Point lastPosition, int player) {
-        MaxValue(DEPTH, map, lastPosition, player, -100, +100);
-	}
 	// Max값 반환해주는 메소드
 	private int MaxValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
 	    if (TerminalTest(lastPosition, player, map)) return 100;	// player가 이겼을 경우 100 반환
@@ -46,9 +40,12 @@ public class PixelPlayerTester extends Player {
         for (Point i : actions) {
             int [][] myMap = ArrayCopy(map);
             myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
-            int result = MinValue(--depth, myMap, i, NotPlayer(player), alpha, beta);	// MinValue 호출
+            int result = MinValue(depth - 1, myMap, i, NotPlayer(player), alpha, beta);	// MinValue 호출
 
-            if (result > max) max = result;		// max값 갱신
+            if (result > max) {
+            	max = result;		// max값 갱신
+				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());;	// 노드 추가
+			}
             if (max >= beta) return max;		// max가 beta보다 크면 유망하지 않으므로 검사 중지
             if (max > alpha) alpha = max;		// alpha를 가장 큰 값으로 갱신
         }
@@ -64,7 +61,7 @@ public class PixelPlayerTester extends Player {
 		for (Point i : actions) {
 			int [][] myMap = ArrayCopy(map);
 			myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
-			int result = MaxValue(--depth, myMap, i, NotPlayer(player), alpha, beta);	// MaxValue 호출
+			int result = MaxValue(depth - 1, myMap, i, NotPlayer(player), alpha, beta);	// MaxValue 호출
 
 			if (result < min) min = result;		// min값 갱신
 			if (min <= alpha) return min;		// min이 alpha
