@@ -1,10 +1,9 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class PixelPlayer08 extends Player {
-    static final int DEPTH = 8;		// 알파베타 알고리즘의 노드 탐색 깊이
-	static Point nextDolPosition = new Point(0, 0);
+    static final int DEPTH = 10;		// 알파베타 알고리즘의 노드 탐색 깊이
+    static int originPlayer;
     static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
                                     {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
 
@@ -14,10 +13,12 @@ public class PixelPlayer08 extends Player {
 
 	PixelPlayer08(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
-		int player = map[(int)lastPosition.getX()][(int)lastPosition.getY()] == 1 ? 1 : 2;	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
+		originPlayer = map[(int)lastPosition.getX()][(int)lastPosition.getY()] == 1 ? 1 : 2;	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
 
-		MaxValue(DEPTH, map, lastPosition, player, -100, +100);	// 알파베타 가지치기 알고리즘 호출
-		return nextDolPosition;
+//		alphabeta(lastPosition, DEPTH, -100, +100, player, originPlayer);
+//		MaxValue(DEPTH, map, lastPosition, player, -100, +100);	// 알파베타 가지치기 알고리즘 호출
+
+		return AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
 	}
 
 	// 주어진 상태에서 가능한 수들의 집합을 돌려준다.
@@ -36,28 +37,65 @@ public class PixelPlayer08 extends Player {
 		}
 		return actionsPoint.toArray(new Point[actionsPoint.size()]);  // arraylist -> array
 	}
+	/*
+	int alphabeta(Point lastPosition, int depth, int alpha, int beta, int player, int originPlayer) {
+		if (depth == 0 || TerminalTest(lastPosition, player, map)) return Result(map, player);
+		Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
+		if (player == originPlayer) {
+			for (Point i : actions) {
+				int [][] myMap = ArrayCopy(map);
+				myMap[(int)i.getX()][(int)i.getY()] = player;
+				int result = alphabeta(i, depth-1, alpha, beta, NotPlayer(player), originPlayer);
+				if (result > alpha) {
+					alpha = result;
+
+					if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
+				}
+				if (beta <= alpha) break;
+			}
+			return alpha;
+		} else {
+			for (Point i : actions) {
+				int [][] myMap = ArrayCopy(map);
+				myMap[(int)i.getX()][(int)i.getY()] = player;
+				int result = alphabeta(i, depth-1, alpha, beta, NotPlayer(player), originPlayer);
+				if (result < beta) beta = result;
+				if (beta <= alpha) break;
+			}
+			return beta;
+		}
+	}
+	*/
+	private Point AlphaBetaSearch(int depth, int[][] map, Point lastPosition, int player) {
+        int max = -100;
+        Point nextDolPosition = new Point(0, 0);
+        Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
+        for (Point i : actions) {
+            int [][] myMap = ArrayCopy(map);
+            myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
+            int result = MaxValue(depth, myMap, i, player, -100, 100);	// MaxValue 호출
+            if (result > max) {
+                max = result;
+                nextDolPosition.setLocation(i.getX(), i.getY());
+            }
+            if (result == max && Math.random() <= 1)  nextDolPosition.setLocation(i.getX(), i.getY());
+        }
+        return nextDolPosition;
+    }
 	// Max값 반환해주는 메소드
 	private int MaxValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
 	    if (TerminalTest(lastPosition, player, map)) return 100;	// player가 이겼을 경우 100 반환
-	    if (depth == 0) return Result(map, player);					// leaf 노드에 도달하면 평가함수 호출
+	    if (depth == 0) return Result(map, originPlayer);					// leaf 노드에 도달하면 평가함수 호출
         int max = -100;
 
         Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
 		// 노드 생성
         for (Point i : actions) {
             int [][] myMap = ArrayCopy(map);
-            myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
+            myMap[(int)i.getX()][(int)i.getY()] = NotPlayer(player);	// 돌 i를 둔 새로운 맵 생성
             int result = MinValue(depth - 1, myMap, i, NotPlayer(player), alpha, beta);	// MinValue 호출
 
-            if (result > max) {
-            	max = result;		// max값 갱신
-
-				if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
-			}
-            if (result == max && depth == DEPTH) {	// 새로운 같은 값을 받았을 때 바꿀지 말지 랜덤으로 정한다.
-            	Random r = new Random();
-            	if (r.nextBoolean()) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
-			}
+            if (result > max) max = result;		// max값 갱신
             if (max >= beta) return max;		// max가 beta보다 크면 유망하지 않으므로 검사 중지
             if (max > alpha) alpha = max;		// alpha를 가장 큰 값으로 갱신
         }
@@ -66,13 +104,13 @@ public class PixelPlayer08 extends Player {
 	// Min값 반환해주는 메소드
 	private int MinValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
 		if (TerminalTest(lastPosition, player, map)) return -100;	// player가 이겼을 경우 100 반환
-		if (depth == 0) return Result(map, NotPlayer(player));		// leaf 노드에 도달하면 평가함수 호출
+		if (depth == 0) return Result(map, originPlayer);		// leaf 노드에 도달하면 평가함수 호출
 		int min = 100;
 
 		Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
 		for (Point i : actions) {
 			int [][] myMap = ArrayCopy(map);
-			myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
+			myMap[(int)i.getX()][(int)i.getY()] = NotPlayer(player);	// 돌 i를 둔 새로운 맵 생성
 			int result = MaxValue(depth - 1, myMap, i, NotPlayer(player), alpha, beta);	// MaxValue 호출
 
 			if (result < min) min = result;		// min값 갱신
@@ -81,6 +119,7 @@ public class PixelPlayer08 extends Player {
 		}
 		return min;
 	}
+
     private int Result(int[][] map, int player) {
         //picture 2 -> 2*2 사이즈에서 이길 수 있는 모형들
         //picture 3 -> 3*3 사이즈에서 이길 수 있는 모형들
