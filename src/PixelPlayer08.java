@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PixelPlayer08 extends Player {
-    static final int DEPTH = 10;		// 알파베타 알고리즘의 노드 탐색 깊이
+    static final int DEPTH = 8;		// 알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
     static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
                                     {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
@@ -13,7 +13,7 @@ public class PixelPlayer08 extends Player {
 
 	PixelPlayer08(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
-		originPlayer = map[(int)lastPosition.getX()][(int)lastPosition.getY()] == 1 ? 1 : 2;	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
+		originPlayer = map[(int)currentPosition.getX()][(int)currentPosition.getY()];	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
 
 //		alphabeta(lastPosition, DEPTH, -100, +100, player, originPlayer);
 //		MaxValue(DEPTH, map, lastPosition, player, -100, +100);	// 알파베타 가지치기 알고리즘 호출
