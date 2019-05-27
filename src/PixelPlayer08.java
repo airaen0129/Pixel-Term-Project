@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PixelPlayer08 extends Player {
-    static final int DEPTH = 8;		// 알파베타 알고리즘의 노드 탐색 깊이
+    static final int DEPTH = 5;		// 알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
     static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
                                     {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
@@ -14,9 +14,6 @@ public class PixelPlayer08 extends Player {
 	PixelPlayer08(int[][] map) { super(map); }
 	public Point nextPosition(Point lastPosition) {
 		originPlayer = map[(int)currentPosition.getX()][(int)currentPosition.getY()];	// 현재 플레이어가 1번 돌인지 2번 돌인지 판단
-
-//		alphabeta(lastPosition, DEPTH, -100, +100, player, originPlayer);
-//		MaxValue(DEPTH, map, lastPosition, player, -100, +100);	// 알파베타 가지치기 알고리즘 호출
 
 		return AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
 	}
@@ -37,35 +34,6 @@ public class PixelPlayer08 extends Player {
 		}
 		return actionsPoint.toArray(new Point[actionsPoint.size()]);  // arraylist -> array
 	}
-	/*
-	int alphabeta(Point lastPosition, int depth, int alpha, int beta, int player, int originPlayer) {
-		if (depth == 0 || TerminalTest(lastPosition, player, map)) return Result(map, player);
-		Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
-		if (player == originPlayer) {
-			for (Point i : actions) {
-				int [][] myMap = ArrayCopy(map);
-				myMap[(int)i.getX()][(int)i.getY()] = player;
-				int result = alphabeta(i, depth-1, alpha, beta, NotPlayer(player), originPlayer);
-				if (result > alpha) {
-					alpha = result;
-
-					if (depth == DEPTH) nextDolPosition.setLocation(i.getX(), i.getY());	// 노드 갱신
-				}
-				if (beta <= alpha) break;
-			}
-			return alpha;
-		} else {
-			for (Point i : actions) {
-				int [][] myMap = ArrayCopy(map);
-				myMap[(int)i.getX()][(int)i.getY()] = player;
-				int result = alphabeta(i, depth-1, alpha, beta, NotPlayer(player), originPlayer);
-				if (result < beta) beta = result;
-				if (beta <= alpha) break;
-			}
-			return beta;
-		}
-	}
-	*/
 	private Point AlphaBetaSearch(int depth, int[][] map, Point lastPosition, int player) {
         int max = -100;
         Point nextDolPosition = new Point(0, 0);
@@ -78,7 +46,6 @@ public class PixelPlayer08 extends Player {
                 max = result;
                 nextDolPosition.setLocation(i.getX(), i.getY());
             }
-            if (result == max && Math.random() <= 1)  nextDolPosition.setLocation(i.getX(), i.getY());
         }
         return nextDolPosition;
     }
@@ -161,14 +128,14 @@ public class PixelPlayer08 extends Player {
         int cnt = 0, midCnt = 0;
 
         for (int i = 0; i < pattern.length; i++) {
-			if (pattern[i][0] != temp[0]) continue;
+            midCnt = 0;
             for (int j = 0; j < pattern[0].length; j++) {
                 if (pattern[i][j] == -1) midCnt++;
                 else if (pattern[i][j] == 1 && temp[j] == player) midCnt++;
                 else if (pattern[i][j] == 0 && temp[j] == 0) midCnt++;
+                else break;
             }
             if (midCnt == pattern[0].length) cnt++;
-            midCnt = 0;
         }
         return cnt;
     }
