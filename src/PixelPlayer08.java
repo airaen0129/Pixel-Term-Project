@@ -35,13 +35,13 @@ public class PixelPlayer08 extends Player {
 		return actionsPoint.toArray(new Point[actionsPoint.size()]);  // arraylist -> array
 	}
 	private Point AlphaBetaSearch(int depth, int[][] map, Point lastPosition, int player) {
-        int max = -100;
+        int max = -101;
         Point nextDolPosition = new Point(0, 0);
         Point[] actions = Actions(lastPosition, map);	// 현재 위치에서 둘 수 있는 위치들 생성
         for (Point i : actions) {
             int [][] myMap = ArrayCopy(map);
             myMap[(int)i.getX()][(int)i.getY()] = player;	// 돌 i를 둔 새로운 맵 생성
-            int result = MaxValue(depth, myMap, i, player, -100, 100);	// MaxValue 호출
+            int result = MinValue(depth, myMap, i, player, -100, 100);	// MaxValue 호출
             if (result > max) {
                 max = result;
                 nextDolPosition.setLocation(i.getX(), i.getY());
@@ -51,7 +51,7 @@ public class PixelPlayer08 extends Player {
     }
 	// Max값 반환해주는 메소드
 	private int MaxValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
-	    if (TerminalTest(lastPosition, player, map)) return 100;	// player가 이겼을 경우 100 반환
+	    if (TerminalTest(lastPosition, player, map)) return -100;	// player가 이겼을 경우 100 반환
 	    if (depth == 0) return Result(map, originPlayer);					// leaf 노드에 도달하면 평가함수 호출
         int max = -100;
 
@@ -70,7 +70,7 @@ public class PixelPlayer08 extends Player {
 	}
 	// Min값 반환해주는 메소드
 	private int MinValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
-		if (TerminalTest(lastPosition, player, map)) return -100;	// player가 이겼을 경우 100 반환
+		if (TerminalTest(lastPosition, player, map)) return 100;	// player가 이겼을 경우 100 반환
 		if (depth == 0) return Result(map, originPlayer);		// leaf 노드에 도달하면 평가함수 호출
 		int min = 100;
 
