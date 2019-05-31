@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PixelPlayer08 extends Player {
-    static final int DEPTH = 5;		// 알파베타 알고리즘의 노드 탐색 깊이
+    static final int DEPTH = 8;		// 알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
     static int onePattern2X2[][] = {{0,1,-1,1},{1,0,-1,1},{1,1,-1,0},
                                     {1,-1,1,0},{1,-1,0,1},{0,-1,1,1}};
