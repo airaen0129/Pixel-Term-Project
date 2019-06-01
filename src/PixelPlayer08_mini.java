@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
-public class PixelPlayer08 extends Player {
+public class PixelPlayer08_mini extends Player {
     static final int DEPTH = 8;//알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
     static int[] temp2by2 = new int[4]; //temp 배열을 선언해준다.
@@ -9,12 +9,12 @@ public class PixelPlayer08 extends Player {
 
     /*평가함수에서 가중치를 부여할 모형*/
     static int onePattern2X2[][] = {{0, 1, -1, 1}, {1, 0, -1, 1}, {1, 1, -1, 0},
-            {1, -1, 1, 0}, {1, -1, 0, 1}, {0, -1, 1, 1}};
+                                    {1, -1, 1, 0}, {1, -1, 0, 1}, {0, -1, 1, 1}};
     static int onePattern3X3[][] = {{1, -1, -1, -1, 1, -1, -1, -1, 0},
-            {0, -1, -1, -1, 1, -1, -1, -1, 1},
-            {1, -1, -1, -1, 0, -1, -1, -1, 1}};
+                                    {0, -1, -1, -1, 1, -1, -1, -1, 1},
+                                    {1, -1, -1, -1, 0, -1, -1, -1, 1}};
 
-    PixelPlayer08(int[][] map) {
+    PixelPlayer08_mini(int[][] map) {
         super(map);
     }
 

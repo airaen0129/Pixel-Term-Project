@@ -1,11 +1,8 @@
 import java.awt.*;
 import java.util.ArrayList;
-public class PixelPlayer08 extends Player {
-    static final int DEPTH = 8;//알파베타 알고리즘의 노드 탐색 깊이
+public class PixelPlayer08_old extends Player {
+    static final int DEPTH = 1;//알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
-    static int[] temp2by2 = new int[4]; //temp 배열을 선언해준다.
-    static int[] temp3by3 = new int[9]; //temp 배열을 선언해준다.s
-    static Point[] newPoint = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
 
     /*평가함수에서 가중치를 부여할 모형*/
     static int onePattern2X2[][] = {{0, 1, -1, 1}, {1, 0, -1, 1}, {1, 1, -1, 0},
@@ -14,12 +11,11 @@ public class PixelPlayer08 extends Player {
             {0, -1, -1, -1, 1, -1, -1, -1, 1},
             {1, -1, -1, -1, 0, -1, -1, -1, 1}};
 
-    PixelPlayer08(int[][] map) {
+    PixelPlayer08_old(int[][] map) {
         super(map);
     }
 
     public Point nextPosition(Point lastPosition) {
-        if (lastPosition.getX() == 4 && lastPosition.getY() == 3) return new Point(4, 2);
         originPlayer = map[(int) currentPosition.getX()][(int) currentPosition.getY()];
         //map에서 currentPosition의 값을 받아서 originplayer에 어떤 플레어가 돌을 놓았는지 저장한다.
         return AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
@@ -27,7 +23,7 @@ public class PixelPlayer08 extends Player {
     }
 
     // 주어진 상태에서 가능한 수들의 집합을 돌려준다.
-    private ArrayList<Point> Actions(Point lastPosition, int[][] map) {
+    private Point[] Actions(Point lastPosition, int[][] map) {
         ArrayList<Point> actionsPoint = new ArrayList<Point>(); // 다음 돌이 놓을 수 있는(map의 값이 0인) 곳 검색
         for (int i = 0; i < PixelTester.SIZE_OF_BOARD; i++) {
             if (map[(int)lastPosition.getX()][i] == 0) {
@@ -39,7 +35,7 @@ public class PixelPlayer08 extends Player {
                 actionsPoint.add(new Point(i, (int) lastPosition.getY()));  //마지막 돌이 놓인 곳에서 돌을 놓을 수 있는 모든 열 조사.
             }
         }
-        return actionsPoint;
+        return actionsPoint.toArray(new Point[actionsPoint.size()]);    //arraylist -> array
     }
 
     private Point AlphaBetaSearch(int depth, int[][] map, Point lastPosition, int player) {
@@ -47,7 +43,7 @@ public class PixelPlayer08 extends Player {
         // max의 값은 -101로 지정해서 중간에 포기하는 수가 나오지 않게한다.
 
         Point nextDolPosition = new Point(0, 0);    //다음 돌은 (0,0)으로 지정한다
-        ArrayList<Point> actions = Actions(lastPosition, map);      // 현재 위치에서 둘 수 있는 위치들 생성
+        Point[] actions = Actions(lastPosition, map);      // 현재 위치에서 둘 수 있는 위치들 생성
 
         for (Point i : actions) {
             int[][] myMap = ArrayCopy(map); //myMap이라는 2차원배열에 map을 저장한다.
@@ -70,7 +66,7 @@ public class PixelPlayer08 extends Player {
         if (depth == 0) return Result(map, originPlayer);           // leaf 노드에 도달하면 평가함수 호출
         int max = -100;
 
-        ArrayList<Point> actions = Actions(lastPosition, map);   // 현재 위치에서 둘 수 있는 위치들 생성
+        Point[] actions = Actions(lastPosition, map);   // 현재 위치에서 둘 수 있는 위치들 생성
 
         // 노드 생성
         for (Point i : actions) {
@@ -90,7 +86,7 @@ public class PixelPlayer08 extends Player {
         if (depth == 0) return Result(map, originPlayer);           // leaf 노드에 도달하면 평가함수 호출
         int min = 100;
 
-        ArrayList<Point> actions = Actions(lastPosition, map);   // 현재 위치에서 둘 수 있는 위치들 생성
+        Point[] actions = Actions(lastPosition, map);   // 현재 위치에서 둘 수 있는 위치들 생성
         for (Point i : actions) {
             int[][] myMap = ArrayCopy(map); // myMap에 map을 저장
             myMap[(int) i.getX()][(int) i.getY()] = NotPlayer(player);  //돌 i를 둔 새로운 맵 생성, NotPlayer함수를 통해서 상대돌의 위치를 입력.
@@ -130,9 +126,7 @@ public class PixelPlayer08 extends Player {
 
     //배열을 복사하는 함수
     private int[] copyPattern(int size, int row, int col, int[][] map) {
-        int[] temp;
-        if (size == 2) temp = temp2by2;
-        else temp = temp3by3;
+        int[] temp = new int[size * size]; //temp 배열을 선언해준다.
         int cut = 0; //cut이라는 인덱스를 생성한다. temp는 1차원배열, map은 2차원 배열이기 때문에, map의 값을 temp에 받기 위한 인덱스로 사용한다.
         for (int i = row; i < row + size; i++) {
             for (int j = col; j < col + size; j++) {
@@ -184,7 +178,9 @@ public class PixelPlayer08 extends Player {
         //y의 값은 인덱스 x에서 받고, x의 값은 인덱스 y에서 받음.
         for (int i = 0; i < 9; i++) {
             int count = 0;
+            Point[] newPoint = new Point[3];
             for (int j = 0; j < 3; j++) {
+                newPoint[j] = new Point();
                 //이전에 들어온 값에 이기는값을 더해서 종료되는값이 나오면 true, 아니면 false 반환
                 newPoint[j].setLocation(PixelTester.inspectionList[i][j][1] + x, PixelTester.inspectionList[i][j][0] + y);
                 if (newPoint[j].y >= 0 && newPoint[j].y < PixelTester.SIZE_OF_BOARD && newPoint[j].x >= 0 && newPoint[j].x < PixelTester.SIZE_OF_BOARD) {
