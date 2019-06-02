@@ -6,6 +6,7 @@ public class PixelPlayer08_mini extends Player {
     static int[] temp2by2 = new int[4]; //temp 배열을 선언해준다.
     static int[] temp3by3 = new int[9]; //temp 배열을 선언해준다.s
     static Point[] newPoint = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
+    static int cnt = 0;
 
     /*평가함수에서 가중치를 부여할 모형*/
     static int onePattern2X2[][] = {{0, 1, -1, 1}, {1, 0, -1, 1}, {1, 1, -1, 0},
@@ -22,7 +23,9 @@ public class PixelPlayer08_mini extends Player {
         if (lastPosition.getX() == 4 && lastPosition.getY() == 3) return new Point(4, 2);
         originPlayer = map[(int) currentPosition.getX()][(int) currentPosition.getY()];
         //map에서 currentPosition의 값을 받아서 originplayer에 어떤 플레어가 돌을 놓았는지 저장한다.
-        return AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
+        Point nextDolPosition = AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
+        System.out.println(cnt);
+        return nextDolPosition;
         // 알파베타검색함수를 사용해서 depth, 맵, 마지막위치, 플레이어를 입력해주면 다음에 놓을 돌의 위치를 반환해준다.
     }
 
@@ -43,6 +46,7 @@ public class PixelPlayer08_mini extends Player {
     }
 
     private Point AlphaBetaSearch(int depth, int[][] map, Point lastPosition, int player) {
+        cnt++;
         int max = -101;
         // max의 값은 -101로 지정해서 중간에 포기하는 수가 나오지 않게한다.
 
@@ -66,6 +70,7 @@ public class PixelPlayer08_mini extends Player {
 
     // Max값 반환해주는 메소드
     private int MaxValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
+        cnt++;
         if (TerminalTest(lastPosition, player, map)) return -100;   // player가 이겼을 경우 -100 반환
         if (depth == 0) return Result(map, originPlayer);           // leaf 노드에 도달하면 평가함수 호출
         int max = -100;
@@ -86,6 +91,7 @@ public class PixelPlayer08_mini extends Player {
     }
     // Min값 반환해주는 메소드
     private int MinValue(int depth, int[][] map, Point lastPosition, int player, int alpha, int beta) {
+        cnt++;
         if (TerminalTest(lastPosition, player, map)) return 100;    // player가 이겼을 경우 100 반환
         if (depth == 0) return Result(map, originPlayer);           // leaf 노드에 도달하면 평가함수 호출
         int min = 100;

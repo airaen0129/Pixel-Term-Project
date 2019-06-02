@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class PixelPlayer08 extends Player {
     static final int DEPTH = 8;//알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
+    static int[] temp;
     static int[] temp2by2 = new int[4]; //temp 배열을 선언해준다.
     static int[] temp3by3 = new int[9]; //temp 배열을 선언해준다.s
     static Point[] newPoint = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
@@ -14,12 +15,10 @@ public class PixelPlayer08 extends Player {
                                     {0, -1, -1, -1, 1, -1, -1, -1, 1},
                                     {1, -1, -1, -1, 0, -1, -1, -1, 1}};
 
-    PixelPlayer08(int[][] map) {
-        super(map);
-    }
+    PixelPlayer08(int[][] map) { super(map); }
 
     public Point nextPosition(Point lastPosition) {
-        if (lastPosition.getX() == 4 && lastPosition.getY() == 3) return new Point(4, 2);
+        if (lastPosition.getX() == 4 && lastPosition.getY() == 3) return new Point(4, 2);   // 시간을 줄이기 위해 공격 첫 수 지정
         originPlayer = map[(int) currentPosition.getX()][(int) currentPosition.getY()];
         //map에서 currentPosition의 값을 받아서 originplayer에 어떤 플레어가 돌을 놓았는지 저장한다.
         return AlphaBetaSearch(DEPTH, map, lastPosition, originPlayer);
@@ -130,7 +129,6 @@ public class PixelPlayer08 extends Player {
 
     //배열을 복사하는 함수
     private int[] copyPattern(int size, int row, int col, int[][] map) {
-        int[] temp;
         if (size == 2) temp = temp2by2;
         else temp = temp3by3;
         int cut = 0; //cut이라는 인덱스를 생성한다. temp는 1차원배열, map은 2차원 배열이기 때문에, map의 값을 temp에 받기 위한 인덱스로 사용한다.

@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 public class PixelPlayer08_old extends Player {
-    static final int DEPTH = 1;//알파베타 알고리즘의 노드 탐색 깊이
+    static final int DEPTH = 8;//알파베타 알고리즘의 노드 탐색 깊이
     static int originPlayer;
 
     /*평가함수에서 가중치를 부여할 모형*/
