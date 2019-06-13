@@ -5,7 +5,7 @@ public class PixelPlayer08 extends Player {
     static int originPlayer;
     static int[] temp;
     static int[] temp2by2 = new int[4]; //temp 배열을 선언해준다.
-    static int[] temp3by3 = new int[9]; //temp 배열을 선언해준다.s
+    static int[] temp3by3 = new int[9]; //temp 배열을 선언해준다.
     static Point[] newPoint = new Point[] { new Point(0, 0), new Point(0, 0), new Point(0, 0) };
 
     /*평가함수에서 가중치를 부여할 모형*/
